@@ -14,6 +14,12 @@ if [ -f ~/.gitconfig ]; then
   rm ~/.gitconfig
 fi
 
+if [ -d ~/.config/alacritty ]; then
+  echo "Removing ~/.config/alacritty"
+  rm -rf ~/.config/alacritty
+fi
+
 echo "Creating symbolic links..."
 ln -sf ~/git/dots/nvim ~/.config/nvim
 ln -sf ~/git/dots/.gitconfig ~/.gitconfig
+ln -sf ~/git/dots/alacritty ~/.config/alacritty
