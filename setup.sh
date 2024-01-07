@@ -3,23 +3,23 @@
 # Change to the directory of this script
 cd "$(dirname "$0")"
 
+declare -A mappings=(
+    [$HOME/git/dots/nvim]=$HOME/.config/nvim
+    [$HOME/git/dots/.gitconfig]=$HOME/.gitconfig
+    [$HOME/git/dots/alacritty]=$HOME/.config/alacritty
+    [$HOME/git/dots/hypr]=$HOME/.config/hypr
+    [$HOME/git/dots/.bashrc]=$HOME/.bashrc
+    [$HOME/git/dots/waybar]=$HOME/.config/waybar
+)
+
 echo "Removing existing files/directories..."
-if [ -d ~/.config/nvim ]; then
-  echo "Removing ~/.config/nvim"
-  rm -rf ~/.config/nvim
-fi
-
-if [ -f ~/.gitconfig ]; then
-  echo "Removing ~/.gitconfig"
-  rm ~/.gitconfig
-fi
-
-if [ -d ~/.config/alacritty ]; then
-  echo "Removing ~/.config/alacritty"
-  rm -rf ~/.config/alacritty
-fi
+for key in "${!mappings[@]}"; do
+    rm -rf ${mappings[$key]}
+done
 
 echo "Creating symbolic links..."
-ln -sf ~/git/dots/nvim ~/.config/nvim
-ln -sf ~/git/dots/.gitconfig ~/.gitconfig
-ln -sf ~/git/dots/alacritty ~/.config/alacritty
+for key in "${!mappings[@]}"; do
+    ln -sf $key ${mappings[$key]}
+done
+
+echo "Done!"
