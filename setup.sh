@@ -8,6 +8,7 @@ declare -A mappings=(
 	["$HOME/git/dots/.gitconfig"]=$HOME/.gitconfig
 	["$HOME/git/dots/alacritty"]=$HOME/.config/alacritty
 	["$HOME/git/dots/.bashrc"]=$HOME/.bashrc
+	["$HOME/git/dots/.bash_profile"]=$HOME/.bash_profile
 )
 
 echo "Removing existing files/directories..."
@@ -25,7 +26,7 @@ sudo add-apt-repository -y ppa:neovim-ppa/unstable
 
 echo "Installing Dependencies..."
 sudo apt update
-sudo apt install -y alacritty neovim python3 python3-venv fzf ripgrep bat exa
+sudo apt install -y alacritty neovim python3 python3-venv fzf ripgrep bat bash-completion screen
 
 if ! [ -x "$(command -v go)" ]; then
 	rm -rf /usr/local/go
@@ -62,6 +63,18 @@ if ! [ -x "$(command -v node)" ]; then
 	nvm install --lts
 fi
 
+if ! [ -x "$(command -v eza)" ]; then
+	echo "Installing eza..."
+	sudo apt update
+	sudo apt install -y gpg
+	sudo mkdir -p /etc/apt/keyrings
+	wget -qO- https://raw.githubusercontent.com/eza-community/eza/main/deb.asc | sudo gpg --dearmor -o /etc/apt/keyrings/gierens.gpg
+	echo "deb [signed-by=/etc/apt/keyrings/gierens.gpg] http://deb.gierens.de stable main" | sudo tee /etc/apt/sources.list.d/gierens.list
+	sudo chmod 644 /etc/apt/keyrings/gierens.gpg /etc/apt/sources.list.d/gierens.list
+	sudo apt update
+	sudo apt install -y eza
+fi
+
 if ! fc-list | grep -q "JetBrainsMono"; then
 	echo "Installing JetBrainsMono Nerd Font"
 	if [ ! -d ~/.fonts ]; then
@@ -73,4 +86,9 @@ if ! fc-list | grep -q "JetBrainsMono"; then
 	fc-cache -f
 fi
 
+# Check if sudoers file has entry for current user/apt and add it if it doesn't
+if ! sudo grep -q "$USER ALL = NOPASSWD: /usr/bin/apt" /etc/sudoers; then
+	echo "Adding sudoers entry for $USER/apt..."
+	sudo echo $USER 'ALL = NOPASSWD: /usr/bin/apt' | sudo tee -a /etc/sudoers
+fi
 echo "Done!"
