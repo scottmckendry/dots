@@ -7,13 +7,14 @@
 
 # Functions
 function lsPretty() {
-    echo ""
-    eza -a -l --header --icons --hyperlink --time-style relative $1
-    echo ""
+	echo ""
+	eza -a -l --header --icons --hyperlink --time-style relative $1
+	echo ""
 }
 
 # Environment variables
 export STARSHIP_CONFIG=~/git/dots/starship/starship.toml
+export PATH=$PATH:/usr/local/go/bin
 
 # Aliases
 alias cd='z'
