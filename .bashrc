@@ -2,6 +2,7 @@
 # ~/.bashrc
 #
 
+export BASHRC_LOADED=1
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
@@ -57,7 +58,7 @@ function updateDotfiles() {
 # Aliases
 alias cd='z'
 alias cdi='zi'
-alias cat='batcat'
+alias cat='bat'
 alias up='updateDotfiles'
 alias us='updateSoftware'
 alias ls=lsPretty
