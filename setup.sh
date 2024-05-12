@@ -23,6 +23,12 @@ for key in "${!mappings[@]}"; do
 done
 
 echo "Installing Dependencies..."
-yay -S --needed --noconfirm alacritty neovim python fzf ripgrep bat bash-completion screen go lazygit eza zoxide starship ttf-jetbrains-mono-nerd nodejs npm powershell-bin azure-cli-bin bicep-bin github-cli
+yay -S --needed --noconfirm alacritty python fzf ripgrep bat bash-completion screen go lazygit eza zoxide starship ttf-jetbrains-mono-nerd nodejs npm powershell-bin azure-cli-bin bicep-bin github-cli unzip fastfetch wget bat fuse3 fuse2 fuse2fs
+
+echo "Install Neovim Nightly"
+yay -R --noconfirm neovim # Remove the stable version if it exists
+wget https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage -O /tmp/nvim
+chmod +x /tmp/nvim
+sudo mv /tmp/nvim /usr/local/bin/nvim
 
 echo "Done!"
