@@ -4,50 +4,7 @@ return {
         {
             "<leader>ee",
             function()
-                local path_tail = (function()
-                    local os_sep = "/"
-                    if vim.fn.has("win32") == 1 then
-                        os_sep = "\\"
-                    end
-
-                    return function(path)
-                        for i = #path, 1, -1 do
-                            if path:sub(i, i) == os_sep then
-                                return path:sub(i + 1, -1)
-                            end
-                        end
-                        return path
-                    end
-                end)()
-
-                local files = require("mini.files")
-                if vim.bo.filetype == "minifiles" then
-                    files.close()
-                else
-                    local is_file = not vim.bo.buftype or vim.bo.buftype == ""
-                    local current_file = vim.fn.expand("%:p")
-
-                    if is_file then
-                        vim.schedule(function()
-                            files.open(vim.fn.expand("%:p:h"))
-                            files.reset()
-                            files.reveal_cwd()
-
-                            local line_num = 1
-                            local entry = files.get_fs_entry(0, line_num)
-
-                            while entry do
-                                if path_tail(current_file) == entry.name then
-                                    vim.api.nvim_win_set_cursor(0, { line_num, 1 })
-                                    return
-                                end
-
-                                line_num = line_num + 1
-                                entry = files.get_fs_entry(0, line_num)
-                            end
-                        end)
-                    end
-                end
+                require("mini.files").open()
             end,
             desc = "Open mini.files (cwd)",
         },
@@ -55,8 +12,8 @@ return {
     config = function()
         require("mini.files").setup({
             windows = {
-                width_focus = 60,
-                width_nofocus = 60,
+                width_focus = 40,
+                width_nofocus = 40,
             },
         })
 
@@ -123,7 +80,7 @@ return {
         local function updateMiniWithGit(buf_id, gitStatusMap)
             vim.schedule(function()
                 local nlines = vim.api.nvim_buf_line_count(buf_id)
-                local cwd = vim.fn.getcwd() --  vim.fn.expand("%:p:h")
+                local cwd = vim.fn.getcwd()
                 local escapedcwd = escapePattern(cwd)
                 if vim.fn.has("win32") == 1 then
                     escapedcwd = escapedcwd:gsub("\\", "/")
@@ -246,22 +203,6 @@ return {
                 if gitStatusCache[cwd] then
                     updateMiniWithGit(bufnr, gitStatusCache[cwd].statusMap)
                 end
-            end,
-        })
-
-        autocmd("User", {
-            pattern = "MiniFilesBufferCreate",
-            callback = function(ev)
-                vim.schedule(function()
-                    vim.api.nvim_set_option_value("buftype", "acwrite", { buf = 0 })
-                    vim.api.nvim_buf_set_name(0, tostring(vim.api.nvim_get_current_win()))
-                    vim.api.nvim_create_autocmd("BufWriteCmd", {
-                        buffer = ev.data.buf_id,
-                        callback = function()
-                            require("mini.files").synchronize()
-                        end,
-                    })
-                end)
             end,
         })
     end,
