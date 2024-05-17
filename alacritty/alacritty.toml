@@ -1,0 +1,19 @@
+import = ["/home/scott/.config/alacritty/cyberdream.toml"]
+
+[font]
+size = 10.0
+
+[font.normal]
+family = "JetBrainsMono Nerd Font"
+
+[window]
+decorations = "None"
+opacity = 0.75
+
+[window.dimensions]
+columns = 140
+lines = 40
+
+[window.padding]
+x = 5
+y = 5

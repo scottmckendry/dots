@@ -2,6 +2,7 @@
 # ~/.bashrc
 #
 
+export BASHRC_LOADED=1
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
@@ -12,14 +13,9 @@ function lsPretty() {
 	echo ""
 }
 
-# Check for updates using apt
+# Check for updates with yay
 function checkUpdates() {
-	screen -S apt -d -m sudo apt update
-	# wait for apt to finish
-	while [ $(screen -ls | grep -c apt) -gt 0 ]; do
-		sleep 1
-	done
-	updates=$(apt list --upgradable 2>/dev/null | wc -l)
+	updates=$(yay -Qu | wc -l)
 	if [ $updates -gt 1 ]; then
 		sed -i "s/SOFTWARE_UPDATE_AVAILABLE=.*/SOFTWARE_UPDATE_AVAILABLE=\"\ \"/" ~/.bash_profile
 	else
@@ -40,8 +36,7 @@ function checkDotfilesUpdate() {
 
 # Update software using apt
 function updateSoftware() {
-	sudo apt update
-	sudo apt upgrade -y
+	yay -Syu --noconfirm
 	sed -i "s/SOFTWARE_UPDATE_AVAILABLE=.*/SOFTWARE_UPDATE_AVAILABLE=\"\"/" ~/.bash_profile
 	. ~/.bash_profile
 }
@@ -63,7 +58,7 @@ function updateDotfiles() {
 # Aliases
 alias cd='z'
 alias cdi='zi'
-alias cat='batcat'
+alias cat='bat'
 alias up='updateDotfiles'
 alias us='updateSoftware'
 alias ls=lsPretty
