@@ -26,6 +26,7 @@ function checkUpdates() {
 # Check for updates in dotfiles
 function checkDotfilesUpdate() {
 	cd ~/git/dots
+	git fetch
 	updates=$(git status | grep -q "behind" && echo "true" || echo "false")
 	if $updates; then
 		sed -i "s/DOTFILES_UPDATE_AVAILABLE=.*/DOTFILES_UPDATE_AVAILABLE=\"󱤜 \"/" ~/.bash_profile
