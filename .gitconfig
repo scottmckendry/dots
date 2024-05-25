@@ -4,6 +4,12 @@
 
 [core]
   editor = nvim
+  pager = delta
+
+[delta]
+  paging = never
+  syntax-theme = cyberdream
+  side-by-side = true
 
 [alias]
   co = checkout
