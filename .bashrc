@@ -51,7 +51,9 @@ function updateSoftware() {
 function updateDotfiles() {
 	currentDir=$(pwd)
 	cd ~/git/dots
+	git stash
 	git pull
+	git stash pop
 	./setup.sh
 	cd $currentDir
 	sed -i "s/DOTFILES_UPDATE_AVAILABLE=.*/DOTFILES_UPDATE_AVAILABLE=\"\"/" ~/.bash_profile
