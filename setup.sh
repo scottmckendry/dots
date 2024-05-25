@@ -5,7 +5,7 @@ declare -A mappings=(
 	["$HOME/git/dots/.bash_profile"]=$HOME/.bash_profile
 	["$HOME/git/dots/.bashrc"]=$HOME/.bashrc
 	["$HOME/git/dots/.gitconfig"]=$HOME/.gitconfig
-	["$HOME/git/dots/.tmux.conf"]=$HOME/.tmux.conf
+	["$HOME/git/dots/tmux/.tmux.conf"]=$HOME/.tmux.conf
 	["$HOME/git/dots/alacritty"]=$HOME/.config/alacritty
 	["$HOME/git/dots/lazygit/"]=$HOME/.config/lazygit
 	["$HOME/git/dots/nvim"]=$HOME/.config/nvim
@@ -36,6 +36,7 @@ deps=(
 	"ripgrep"
 	"screen"
 	"starship"
+	"tmux"
 	"ttf-jetbrains-mono-nerd"
 	"unzip"
 	"wget"
@@ -77,5 +78,12 @@ for dep in "${deps[@]}"; do
 	depString="$depString $dep"
 done
 yay -S --noconfirm --needed $depString
+
+echo "Configuring tmux..."
+if [ ! -d "$HOME/.tmux/plugins/tpm" ]; then
+	git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+fi
+$HOME/.tmux/plugins/tpm/bin/install_plugins
+ln -sf $HOME/git/dots/tmux/cyberdream.tmuxtheme $HOME/.tmux/plugins/tmux/themes/catppuccin_cyberdream.tmuxtheme
 
 echo "Done!"
