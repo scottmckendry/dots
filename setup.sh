@@ -26,6 +26,7 @@ deps=(
 	"fuse3"
 	"fzf"
 	"github-cli"
+	"git-delta"
 	"go"
 	"lazygit"
 	"neovim-git"
@@ -85,5 +86,10 @@ if [ ! -d "$HOME/.tmux/plugins/tpm" ]; then
 fi
 $HOME/.tmux/plugins/tpm/bin/install_plugins
 ln -sf $HOME/git/dots/tmux/cyberdream.tmuxtheme $HOME/.tmux/plugins/tmux/themes/catppuccin_cyberdream.tmuxtheme
+
+# install bat themes
+cp -f $HOME/git/dots/bat/themes/* $HOME/.config/bat/themes/
+bat cache --clear
+bat cache --build
 
 echo "Done!"
