@@ -36,6 +36,7 @@ deps=(
 	"ripgrep"
 	"screen"
 	"starship"
+	"tmux"
 	"ttf-jetbrains-mono-nerd"
 	"unzip"
 	"wget"
@@ -77,5 +78,11 @@ for dep in "${deps[@]}"; do
 	depString="$depString $dep"
 done
 yay -S --noconfirm --needed $depString
+
+echo "Configuring tmux..."
+if [ ! -d "$HOME/.tmux/plugins/tpm" ]; then
+	git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+	$HOME/.tmux/plugins/tpm/bin/install_plugins
+fi
 
 echo "Done!"
