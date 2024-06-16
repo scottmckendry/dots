@@ -7,7 +7,7 @@ size = 10.0
 family = "JetBrainsMono Nerd Font"
 
 [window]
-decorations = "None"
+decorations = "none"
 opacity = 0.75
 
 [window.dimensions]
@@ -15,5 +15,5 @@ columns = 140
 lines = 40
 
 [window.padding]
-x = 5
-y = 5
+x = 10
+y = 10

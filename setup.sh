@@ -9,59 +9,35 @@ declare -A mappings=(
 	["$HOME/git/dots/alacritty"]=$HOME/.config/alacritty
 	["$HOME/git/dots/lazygit/"]=$HOME/.config/lazygit
 	["$HOME/git/dots/nvim"]=$HOME/.config/nvim
+	["$HOME/git/dots/fastfetch"]=$HOME/.config/fastfetch
 )
 
 # Dependencies
 deps=(
 	"alacritty"
-	"azure-cli-bin"
+	# "azure-cli-bin"
 	"bash-completion"
 	"bat"
 	"bat"
-	"bicep-bin"
+	# "bicep-bin"
 	"eza"
 	"fastfetch"
-	"fuse2"
-	"fuse2fs"
-	"fuse3"
 	"fzf"
-	"github-cli"
+	"gh"
 	"git-delta"
 	"go"
 	"lazygit"
-	"neovim-git"
+	"neovim"
 	"nodejs"
 	"npm"
-	"powershell-bin"
+	# "powershell-bin"
 	"python"
 	"ripgrep"
-	"screen"
 	"starship"
-	"tmux"
-	"ttf-jetbrains-mono-nerd"
 	"unzip"
 	"wget"
 	"zoxide"
 )
-
-# Install yay if not already installed
-if ! command -v yay &>/dev/null; then
-	echo "yay could not be found, installing..."
-	sudo pacman -S --noconfirm git base-devel
-
-	# Clone the yay repository
-	git clone https://aur.archlinux.org/yay-bin
-	cd yay-bin
-	makepkg -si --noconfirm
-
-	# Clean up
-	cd ..
-	rm -rf yay-bin
-fi
-yay -Syu --noconfirm
-
-# Change to the directory of this script
-cd "$(dirname "$0")"
 
 echo "Removing existing files/directories..."
 for key in "${!mappings[@]}"; do
@@ -74,18 +50,18 @@ for key in "${!mappings[@]}"; do
 done
 
 echo "Installing Dependencies..."
+# enable coprs & third party repos
+sudo dnf install 'dnf-command(copr)'
+sudo dnf install 'dnf-command(config-manager)'
+sudo dnf copr enable atim/lazygit -y
+sudo dnf copr enable atim/starship -y
+sudo dnf config-manager --add-repo https://cli.github.com/packages/rpm/gh-cli.repo
+
 depString=""
 for dep in "${deps[@]}"; do
 	depString="$depString $dep"
 done
-yay -S --noconfirm --needed $depString
-
-echo "Configuring tmux..."
-if [ ! -d "$HOME/.tmux/plugins/tpm" ]; then
-	git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-fi
-$HOME/.tmux/plugins/tpm/bin/install_plugins
-ln -sf $HOME/git/dots/tmux/cyberdream.tmuxtheme $HOME/.tmux/plugins/tmux/themes/catppuccin_cyberdream.tmuxtheme
+sudo dnf install --assumeyes $depString
 
 # install bat themes
 cp -f $HOME/git/dots/bat/themes/* $HOME/.config/bat/themes/
