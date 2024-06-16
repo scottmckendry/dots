@@ -1,11 +1,4 @@
-#
 # ~/.bashrc
-#
-
-# start tmux
-if command -v tmux &>/dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
-	exec tmux
-fi
 
 export BASHRC_LOADED=1
 # If not running interactively, don't do anything
@@ -18,9 +11,9 @@ function lsPretty() {
 	echo ""
 }
 
-# Check for updates with yay
+# Check for updates with dnf
 function checkUpdates() {
-	updates=$(yay -Qu | wc -l)
+	updates=$(dnf check-update | grep -Ec ' updates$')
 	if [ $updates -gt 1 ]; then
 		sed -i "s/SOFTWARE_UPDATE_AVAILABLE=.*/SOFTWARE_UPDATE_AVAILABLE=\"\ \"/" ~/.bash_profile
 	else
@@ -89,5 +82,7 @@ eval "$(zoxide init bash)"
 
 (checkUpdates &)
 (checkDotfilesUpdate &)
+
+fastfetch --logo ~/.config/fastfetch/logos/ascii.txt
 
 PROMPT_COMMAND='source ~/.bash_profile;'$PROMPT_COMMAND
