@@ -33,9 +33,9 @@ function checkDotfilesUpdate() {
 	fi
 }
 
-# Update software using apt
+# Update software using dnf
 function updateSoftware() {
-	yay -Syu --noconfirm
+	sudo dnf upgrade -y
 	sed -i "s/SOFTWARE_UPDATE_AVAILABLE=.*/SOFTWARE_UPDATE_AVAILABLE=\"\"/" ~/.bash_profile
 	. ~/.bash_profile
 }
