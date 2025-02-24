@@ -15,7 +15,7 @@ jobs:
                 file: [.github, bat, fastfetch, nvim, starship, wezterm]
                 repo: [dots, nix, Windots]
                 exclude:
-                    - repo: ${{ github.repository_name }}
+                    - repo: ${{ github.event.repository.name }}
         runs-on: ubuntu-latest
         steps:
             - name: Checkout
