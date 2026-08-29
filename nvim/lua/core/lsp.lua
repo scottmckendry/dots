@@ -12,24 +12,19 @@ vim.diagnostic.config({
 local mason_bin = vim.fn.stdpath("data") .. "/mason/bin"
 vim.env.PATH = mason_bin .. ":" .. vim.env.PATH
 
-vim.lsp.enable({
-    "basedpyright",
-    "bashls",
-    "bicep",
-    "docker_compose_language_service",
-    "emmylua_ls",
-    "gopls",
-    "html",
-    "jsonls",
-    "nixd",
-    "ols",
-    "powershell_es",
-    "rust_analyzer",
-    "tailwindcss",
-    "taplo",
-    "templ",
-    "terraformls",
-    "tinymist",
-    "ts_ls",
-    "yamlls",
-})
+-- enable all lsp defs in nvim/lsp
+local lsp_dir = vim.fn.stdpath("config") .. "/lsp"
+local servers = {}
+local handle = vim.uv.fs_scandir(lsp_dir)
+if handle then
+    while true do
+        local name, type = vim.uv.fs_scandir_next(handle)
+        if not name then
+            break
+        end
+        if type == "file" and name:match("%.lua$") then
+            servers[#servers + 1] = name:gsub("%.lua$", "")
+        end
+    end
+end
+vim.lsp.enable(servers)
