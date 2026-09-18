@@ -1,4 +1,5 @@
 # dots
 My dotfiles for Linux
 
-Note: this repository is mostly unmaintained. All recent commits are (most-likely) synchronised changes from [Windots](https://github.com/scottmckendry/Windots) or my NixOS [flake](https://github.com/scottmckendry/nix). 
+> [!NOTE]  
+> I'm on nix and I don't plan on moving any time soon. All of my up-to-date dotfiles are [here](https://github.com/scottmckendry/nix)
